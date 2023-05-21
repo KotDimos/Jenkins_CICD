@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  jenkins:
+    image: ${IMAGE}:${VERSION}
+    container_name: ${CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    user: root
+    ports:
+      - "${HOST_PORT}:8080"
+    networks:
+      - jenkins_network
+    volumes:
+      - "jenkins_data:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+networks:
+  jenkins_network:
+    name: ${NETWORK_NAME}
+
+volumes:
+  jenkins_data:
+    name: ${VOLUME_NAME}
